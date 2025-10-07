@@ -1,6 +1,4 @@
 import "./styles.css";
-
-// TodoApp.jsx
 import React, { useState } from "react";
 import useTodoStore from "./useTodoStore";
 
@@ -9,9 +7,6 @@ const TodoApp = () => {
 
   // Selective subscriptions for optimal performance
   const addTodo = useTodoStore((state) => state.addTodo);
-  const todos = useTodoStore((state) => state.getFilteredTodos());
-  const filter = useTodoStore((state) => state.filter);
-  const setFilter = useTodoStore((state) => state.setFilter);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -36,29 +31,15 @@ const TodoApp = () => {
         <button type="submit">Add</button>
       </form>
 
-      {/* Filter buttons */}
-      <div className="filters">
-        {["all", "active", "completed"].map((filterType) => (
-          <button
-            key={filterType}
-            onClick={() => setFilter(filterType)}
-            className={filter === filterType ? "active" : ""}
-          >
-            {filterType.charAt(0).toUpperCase() + filterType.slice(1)}
-          </button>
-        ))}
-      </div>
-
       {/* Todo list */}
       <TodoList />
     </div>
   );
 };
 
-// TodoList.jsx
 const TodoList = () => {
   // Only re-renders when filtered todos change
-  const todos = useTodoStore((state) => state.getFilteredTodos());
+  const todos = useTodoStore((state) => state.todos);
 
   return (
     <ul className="todo-list">
@@ -69,7 +50,6 @@ const TodoList = () => {
   );
 };
 
-// TodoItem.jsx
 const TodoItem = ({ todo }) => {
   const toggleTodo = useTodoStore((state) => state.toggleTodo);
   const deleteTodo = useTodoStore((state) => state.deleteTodo);
